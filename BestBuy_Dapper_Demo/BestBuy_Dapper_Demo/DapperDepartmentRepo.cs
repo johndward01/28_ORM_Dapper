@@ -1,0 +1,45 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace BestBuy_Dapper_Demo
+{
+    public class DapperDepartmentRepo : IDepartmentRepository
+    {
+        private readonly IDbConnection _connection;
+
+        public DapperDepartmentRepo(IDbConnection connection)
+        {
+            _connection = connection;
+        }
+
+        public IEnumerable<Department> GetAllDepartments()
+        {
+            return _connection.Query<Department>("SELECT * FROM departments;");
+        }
+
+        public void InsertDepartment(string newDepartmentName)
+        {
+            _connection.Execute("INSERT INTO DEPARTMENTS (Name) VALUES (@departmentName);",
+                new { departmentName = newDepartmentName});
+        }
+
+        public void UpdateDepartment(int id, string newName)
+        {
+            _connection.Execute("UPDATE departments SET Name = @newName WHERE DepartmentID = @id;", new { newName = newName, id = id });
+        }
+
+        public void DeleteDepartment(int id)
+        {
+            _connection.Execute("DELETE FROM departments WHERE DepartmentID = @id;", new { id });
+        }
+
+        public void DeleteDepartments(int start, int end)
+        {
+            _connection.Execute("DELETE FROM departments WHERE DepartmentID BETWEEN @start AND @end;", new { start, end });
+        }
+
+    }
+}
