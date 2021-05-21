@@ -27,12 +27,12 @@ namespace BestBuy_Dapper_Demo
 
             foreach (var dept in departments)
             {
-                Console.WriteLine($"DepartmentID: {dept.DepartmentID}");
-                Console.WriteLine($"Name: {dept.Name}");
-                Console.WriteLine();
+                Console.WriteLine($"{dept.DepartmentID} {dept.Name}");
                 Console.WriteLine();
             }
 
+            Console.WriteLine("__________________________________________________________________________");
+            Console.WriteLine();
             //departmentRepo.InsertDepartment("Test Department");
             //departmentRepo.UpdateDepartment(13, "Test");
 
