@@ -10,29 +10,48 @@ namespace BestBuy_Dapper_Demo
     {
         static void Main(string[] args)
         {
-            var config = StartUp.Setup();
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
             string connString = config.GetConnectionString("DefaultConnection");
             IDbConnection conn = new MySqlConnection(connString);
 
-            var repo = new DapperDepartmentRepo(conn);
+            var departmentRepo = new DapperDepartmentRepo(conn);
+            var productRepo = new DapperProductRepo(conn);
 
-            //var departments = repo.GetAllDepartments();
+            //-------------------------------------------------------------------------------------
 
-            //foreach (var dept in departments)
-            //{
-            //    Console.WriteLine($"DepartmentID: {dept.DepartmentID}");
-            //    Console.WriteLine($"Name: {dept.Name}");
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //}
+            var departments = departmentRepo.GetAllDepartments();
 
-            //repo.InsertDepartment("Test Department");
-            //repo.UpdateDepartment("Appliances", 14);
-            //repo.UpdateDepartment(13, "Test");
-            repo.DeleteDepartment()
+            foreach (var dept in departments)
+            {
+                Console.WriteLine($"DepartmentID: {dept.DepartmentID}");
+                Console.WriteLine($"Name: {dept.Name}");
+                Console.WriteLine();
+                Console.WriteLine();
+            }
 
-            
+            //departmentRepo.InsertDepartment("Test Department");
+            //departmentRepo.UpdateDepartment(13, "Test");
+
+
+
+            //productRepo.CreateProduct("Test_Product", 100.59, 10);
+            //productRepo.UpdateProductName(950, "Updated_Test_Product");
+            //productRepo.DeleteProduct(950);
+
+            var products = productRepo.GetAllProducts();
+
+            foreach (var p in products)
+            {
+                Console.WriteLine($"{p.ProductID} {p.Name} {p.Price}");
+                Console.WriteLine(); 
+                Console.WriteLine(); 
+            }
+
+
         }
     }
 }
